@@ -3,4 +3,4 @@ Version 0.20
   # I/O changed to C++ library(fstream) from C library(cstdio)
   # Improved Archive view output
   
-  @ Restore function not completed
+  @ Restore function not yet functional

@@ -1,2 +1,3 @@
 language: cpp
 os: windows
+script: make

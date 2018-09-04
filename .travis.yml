@@ -1,3 +1,2 @@
 language: cpp
-os
-  - windows
+os: windows

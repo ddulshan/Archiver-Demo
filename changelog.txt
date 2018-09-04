@@ -1,0 +1,6 @@
+Version 0.20
+  # Added Data Structures
+  # I/O changed to C++ library(fstream) from C library(cstdio)
+  # Improved Archive view output
+  
+  @ Restore function not completed

@@ -1,4 +1,4 @@
 # n00bLorD-Archiver
 CLI Archiver 
 
-<table border=1 width=20%><tr><th>Windows</th></tr><tr><td><img src="https://travis-ci.org/ddulshan/n00bLorD-Archiver.svg?branch=master"</img></td></tr></table>
+<table border=0><tr><th>Windows</th></tr><tr><td><a href="https://travis-ci.org/ddulshan/n00bLorD-Archiver"><img src="https://travis-ci.org/ddulshan/n00bLorD-Archiver.svg?branch=master"</img></a></td></tr></table>

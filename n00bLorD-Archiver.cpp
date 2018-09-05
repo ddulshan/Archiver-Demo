@@ -12,10 +12,10 @@ using namespace std;
 struct archiveHeader {
     char    version[5];     //Offset 0, length 5, Archiver version
     time_t  time_created;   //Offset 5, length 8, Number of files in the archive
-    char    desc[256];      //Offset 13, length 256, Archive description, Header size 296
+    char    desc[256];      //Offset 13, length 256, Archive description, Header size 296?
 
     archiveHeader() {
-        strcpy(version, "0.20");
+        strcpy(version, "0.21");
         strcpy(desc, "THIS IS A DESCRIPTION FIELD WITH 256BYTE!");
         time(&time_created);
     }
@@ -26,8 +26,8 @@ struct fileEntry {
     char    file_name[128]; //Offset 4, length 128, Absolute File name
     int     file_size;      //Offset 132, length 64, File size in bytes
     int     chunk_size;     //Offset 196, length 4, Size in bytes of single chunk
-    int     chunks;         //Offset 200, length 8, Number of chunks of chunk_size bytes, Header Size 208
-    time_t  time_added;
+    int     chunks;         //Offset 200, length 8, Number of chunks of chunk_size bytes
+    time_t  time_added;     //Offset 208, length 4, Time object created, Header Size 212?
 
     fileEntry() {
         chunk_size = 512;
@@ -140,7 +140,7 @@ int view(string archive_name) {
     archiveHeader   archive_struct_read;
     fileEntry       file_struct_read;
     struct tm       *time_struct;
-    std::stringstream    stream;
+    stringstream    stream;
 
     ifstream archive_read(archive_name.c_str(), ios::binary);
     if(archive_read.fail()) {
@@ -154,12 +154,15 @@ int view(string archive_name) {
              << setw(20) << left << "Last Modified\n--------------------------------------------------------------------------------\n";
         archive_read.read((char*)&archive_struct_read, sizeof(archive_struct_read));
 
-        for(int c = 0; c < 3; c++) {
+        while(1) {
             archive_read.read((char*)&file_struct_read, sizeof(file_struct_read));
             buffer = (char*)malloc(sizeof(char)*file_struct_read.file_size);
             archive_read.read(buffer, file_struct_read.file_size);
 
             time_struct = localtime(&file_struct_read.time_added);
+
+            if(archive_read.eof())
+                break;
 
             stream << time_struct->tm_hour << ":"
                    << time_struct->tm_min << ":"
@@ -171,7 +174,7 @@ int view(string archive_name) {
             cout << setw(8) << left << file_struct_read.id
                  << setw(40) << left << file_struct_read.file_name
                  << setw(10) << left << file_struct_read.file_size
-                 << setw(20) << left << stream.str() << endl;
+                 << setw(20) << left << stream.str() <<endl;
 
             free(buffer);
             stream.str(string());
@@ -183,33 +186,27 @@ int view(string archive_name) {
 }
 
 int restore(string archive_name) {
-    FILE *read_ptr, *write_ptr;
-    char *buffer, *file_name, *entry;
-    float file_size;
-    size_t result;
+    archiveHeader   archive_struct_read;
+    fileEntry       file_struct_read, file_struct_write;
 
-    file_name = (char*) malloc(sizeof(char)*128);
-    entry = (char*) malloc(sizeof(char)*10);
+    ifstream archive_read(archive_name.c_str(), ios::binary);
 
-    read_ptr = fopen(archive_name.c_str(), "rb");
-    if(read_ptr == NULL) {
-        cout << "\n" << archive_name << " : Archive file not found\n";
-    }
-    else {
-        cout << "\nExtracting Archive : " << archive_name << "\n" << endl;
-        do {
-            fscanf(read_ptr, "%s %s %f ", entry, file_name, &file_size);
+    archive_read.read((char*)&archive_struct_read, sizeof(archive_struct_read));
 
-            buffer = (char*) malloc(sizeof(char)*file_size);
-            result = fread(buffer, 1, file_size, read_ptr);
+    while(1) {
+        archive_read.read((char*)&file_struct_read, sizeof(file_struct_read));
 
-            write_ptr = fopen(file_name, "wb");
-            fwrite(buffer, 1, file_size, write_ptr);
-            fclose(write_ptr);
+        char * readbuff = new char [file_struct_read.file_size];
+        archive_read.read(readbuff, file_struct_read.file_size);
 
-            cout << file_name << " : Done\n";
-        }while(fgetc(read_ptr) != EOF);
-        fclose(read_ptr);
+        if(archive_read.eof())
+                break;
+
+        ofstream file_write(file_struct_read.file_name, ios::binary);
+        file_write.write(readbuff, file_struct_read.file_size);
+
+        file_write.close();
+        free(readbuff);
     }
 
     return 0;

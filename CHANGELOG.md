@@ -1,3 +1,7 @@
+Version 0.25
+  # Large file handling added. Previous versions caused memory overflow and crash.
+  # Minor bug and code fixing.
+
 Version 0.21
   # Restore function fixed and functional
   # Minor bug and code fixing

@@ -6,9 +6,9 @@ Simple CLI Archiver project
 
 ### Usage
 
-Usage option as of Version 0.25
+Usage options as of Version 0.25
 
-  -a,--archive\tArchive file(s)
-  -r,--restore\tRestore file(s) from archive
-  -v,--view\tView file(s) in an archive file
-  -h,--help\tShow usage information
+  -a,--archive  Archive file(s)<br>
+  -r,--restore  Restore file(s) from archive<br>
+  -v,--view     View file(s) in an archive file<br>
+  -h,--help     tShow usage information<br>

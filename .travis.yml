@@ -1,5 +1,8 @@
 language: cpp
+install: make get-deps
 os: 
   - windows
   - linux
   - osx
+compiler:
+  - gcc

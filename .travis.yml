@@ -3,4 +3,3 @@ os:
   - windows
   - linux
   - osx
-script: make n00bLorD-Archiver.cpp

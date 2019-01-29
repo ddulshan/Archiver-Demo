@@ -3,3 +3,6 @@ os:
   - windows
   - linux
   - osx
+compiler:
+  - gcc
+script: ./configure && make n00bLorD-Archiver.cpp

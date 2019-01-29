@@ -28,7 +28,7 @@ struct fileEntry {
     int     id;             //Offset 0, length 4, File ID in archive
     char    file_name[128]; //Offset 4, length 128, Absolute File name
     int     file_size;      //Offset 132, length 64, File size in bytes
-    int     chunk_size;     //Offset 196, length 4, Size in bytes of single chunk
+    int     chunk_size;     //Offset 196, length 4, Size in bytes of a single chunk
     int     chunks;         //Offset 200, length 8, Number of chunks of chunk_size bytes
     int     chunk_rem;
     time_t  time_added;     //Offset 208, length 4, Time object created, Header Size 212?
